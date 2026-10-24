@@ -2,506 +2,812 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>NEOFLOW E-COMMERCE | Dashboard & Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Solution & E-Commerce Tech Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <style>
     :root {
-      --bg-main: #060913;
-      --bg-surface: #0b1120;
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --bg-glass: rgba(11, 17, 32, 0.95);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-pink: #ec4899;
-      --accent-purple: #8b5cf6;
+      --bg-main: #070614;
+      --bg-surface: #0f0d26;
+      --bg-card: rgba(20, 16, 48, 0.85);
+      --bg-glass: rgba(15, 13, 38, 0.9);
+      --text-main: #f3f0ff;
+      --text-muted: #9a94c4;
+      --accent-purple: #7c3aed;
       --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --border-color: rgba(139, 92, 246, 0.25);
-      --border-hover: rgba(236, 72, 153, 0.5);
-      --glow-pink: rgba(236, 72, 153, 0.2);
-      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
-      --radius-lg: 16px;
-      --radius-md: 10px;
+      --cinematic-gradient: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #06b6d4 100%);
+      --glow-effect: rgba(124, 58, 237, 0.3);
+      --border-color: rgba(6, 182, 212, 0.2);
+      --border-hover: rgba(124, 58, 237, 0.5);
+      --shadow-cinematic: 0 30px 60px -12px rgba(0, 0, 0, 0.95);
+      --radius-lg: 24px;
+      --radius-md: 14px;
       --font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
-      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-main: #f6f5ff;
+      --bg-surface: #eae6ff;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-glass: rgba(246, 245, 255, 0.9);
+      --text-main: #140e38;
+      --text-muted: #56507a;
+      --accent-purple: #6d28d9;
+      --accent-cyan: #0891b2;
+      --cinematic-gradient: linear-gradient(135deg, #6d28d9 0%, #4338ca 50%, #0891b2 100%);
+      --glow-effect: rgba(109, 40, 217, 0.18);
+      --border-color: rgba(8, 145, 178, 0.2);
+      --border-hover: rgba(109, 40, 217, 0.5);
+      --shadow-cinematic: 0 20px 40px -15px rgba(0, 0, 0, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
-    html, body { width: 100%; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth; }
-    body { background-color: var(--bg-main); color: var(--text-main); position: relative; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body { background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.5s ease, color 0.5s ease; position: relative; }
 
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
-    .app-container {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: 100vh;
-      width: 100%;
+    .cinematic-bg {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none;
+      background: radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.18) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                  var(--bg-main);
     }
 
-    /* الشريط الجانبي (Desktop Sidebar) */
-    .sidebar {
-      background: var(--bg-surface);
-      border-left: 1px solid var(--border-color);
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      z-index: 100;
+    .promo-banner {
+      background: var(--cinematic-gradient); color: #fff; text-align: center;
+      height: 34px; font-size: 0.75rem; font-weight: 800; position: fixed; top: 0; left: 0; width: 100%; z-index: 1001;
+      display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      padding: 0 10px;
+    }
+    .promo-banner span { background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 4px; }
+
+    header {
+      position: fixed; top: 44px; left: 50%; transform: translateX(-50%);
+      width: 96%; max-width: 1320px; background: var(--bg-glass);
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border-color); border-radius: 18px;
+      padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;
+      z-index: 1000; box-shadow: var(--shadow-cinematic);
     }
 
-    .brand-box {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 30px;
-      padding-right: 8px;
+    .brand-container { display: flex; align-items: center; gap: 8px; }
+    .brand-logo-box {
+      width: 34px; height: 34px; background: var(--cinematic-gradient);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 1rem;
+      box-shadow: 0 4px 15px var(--glow-effect); flex-shrink: 0;
     }
+    .brand-text h1 {
+      font-size: 0.85rem; font-weight: 900;
+      background: var(--cinematic-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+    .brand-text span { font-size: 0.58rem; color: var(--text-muted); font-weight: 700; display: block; }
 
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 900;
-      font-size: 1.1rem;
-      box-shadow: 0 0 15px var(--glow-pink);
+    .nav-links {
+      display: flex; gap: 4px; background: rgba(255, 255, 255, 0.03);
+      padding: 3px; border-radius: 100px; border: 1px solid rgba(255, 255, 255, 0.05);
     }
-
-    .brand-name {
-      font-size: 0.95rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .brand-sub { font-size: 0.6rem; color: var(--accent-pink); font-weight: 700; display: block; letter-spacing: 1px; }
-
-    .menu-list { display: flex; flex-direction: column; gap: 6px; }
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 700;
-      transition: var(--transition);
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: right;
-    }
-    .menu-item i { font-size: 1rem; width: 20px; text-align: center; }
-    .menu-item:hover, .menu-item.active {
-      color: #fff;
-      background: linear-gradient(90deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.05));
-      border-right: 3px solid var(--accent-pink);
-    }
-
-    .user-profile-mini {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding-top: 15px;
-      border-top: 1px solid var(--border-color);
-    }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
-    .user-info .name { font-size: 0.78rem; font-weight: 800; }
-    .user-info .status { font-size: 0.62rem; color: var(--text-muted); }
-
-    /* منطقة المحتوى الرئيسي (Main Content Tabs) */
-    .main-content {
-      padding: 24px;
-      overflow-y: auto;
-      max-height: 100vh;
-      position: relative;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    .page-title { font-size: 1.25rem; font-weight: 900; }
-
-    .header-actions { display: flex; align-items: center; gap: 15px; }
-    .icon-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .icon-btn:hover { color: #fff; border-color: var(--accent-pink); background: var(--glow-pink); }
-
-    /* شبكة البطاقات العليا (Top Cards) */
-    .top-cards-section { margin-bottom: 24px; }
-    .section-label { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
-    
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-card);
-      backdrop-filter: blur(10px);
-    }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%;
-      background: var(--accent-pink);
-    }
-    .stat-card:nth-child(2)::before { background: var(--accent-purple); }
-    .stat-card:nth-child(3)::before { background: var(--accent-emerald); }
-    .stat-card:nth-child(4)::before { background: var(--accent-cyan); }
-
-    .stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .stat-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
-    .stat-badge { font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
-    .badge-pos { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
-    .badge-neg { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-
-    .stat-value { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
-
-    /* الرسم البياني والتحليلات */
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: 2.2fr 1fr;
-      gap: 15px;
-      margin-bottom: 24px;
-    }
-
-    .analytics-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .box-title { font-size: 0.9rem; font-weight: 800; }
-    .filter-pills { display: flex; gap: 6px; }
-    .pill {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
-      color: var(--text-muted); padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; cursor: pointer;
-    }
-    .pill.active { background: var(--accent-pink); color: #fff; border-color: transparent; }
-
-    .chart-container {
-      height: 140px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      padding-top: 10px;
-    }
-    .chart-svg { width: 100%; height: 100%; overflow: visible; }
-
-    /* شبكة المنتجات */
-    .products-grid-custom {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .product-card-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      transition: var(--transition);
-      box-shadow: var(--shadow-card);
-    }
-    .product-card-item:hover {
-      border-color: var(--accent-pink);
-      transform: translateY(-3px);
-    }
-
-    .product-thumb {
-      width: 100%;
-      height: 110px;
-      background: linear-gradient(135deg, #1e1b4b, #31103f);
-      border-radius: var(--radius-md);
-      margin-bottom: 12px;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .product-thumb i { font-size: 2.2rem; color: var(--accent-pink); }
-
-    .product-meta-title { font-size: 0.88rem; font-weight: 800; margin-bottom: 2px; }
-    .product-meta-cat { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; display: block; }
-    
-    .product-stats-row {
-      display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;
-      font-size: 0.75rem;
-    }
-    .price-tag { font-weight: 900; color: var(--accent-cyan); font-size: 0.95rem; }
-    .sales-count { color: var(--text-muted); font-weight: 700; }
-
-    /* شريط الملاحة السفلي للموبايل (Mobile Bottom Bar) */
-    .mobile-nav-bar {
-      display: none;
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: var(--bg-glass);
-      backdrop-filter: blur(15px);
-      border-top: 1px solid var(--border-color);
-      justify-content: space-around;
-      padding: 10px;
-      z-index: 1000;
-    }
-    .mob-nav-btn {
+    .nav-link-btn {
       background: transparent; border: none; color: var(--text-muted);
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      font-size: 0.65rem; font-weight: 700; cursor: pointer;
+      padding: 5px 12px; border-radius: 100px; font-weight: 700; font-size: 0.75rem;
+      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 5px; white-space: nowrap;
+    }
+    .nav-link-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+    .nav-link-btn.active {
+      color: #fff; background: var(--cinematic-gradient); font-weight: 800;
+      box-shadow: 0 4px 15px var(--glow-effect);
+    }
+
+    .nav-controls { display: flex; align-items: center; gap: 6px; }
+    .ctrl-btn-group { display: flex; align-items: center; gap: 4px; background: rgba(255, 255, 255, 0.03); padding: 3px; border-radius: 100px; border: 1px solid var(--border-color); }
+    .ctrl-btn {
+      background: transparent; border: none; color: var(--text-main); width: 28px; height: 28px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition); font-size: 0.75rem; font-weight: 800;
+    }
+    .ctrl-btn:hover { background: var(--glow-effect); color: var(--accent-cyan); }
+
+    .cart-badge { position: relative; }
+    .cart-count {
+      position: absolute; top: -4px; right: -4px; background: var(--accent-cyan);
+      color: #000; font-size: 0.55rem; font-weight: 900; width: 14px; height: 14px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+
+    .app-viewport {
+      position: absolute; top: 102px; bottom: 0; left: 0; right: 0;
+      width: 100%; max-width: 1300px; margin: 0 auto; padding: 10px 16px 20px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .tab-section {
+      position: absolute; width: 100%; max-height: 100%; opacity: 0; visibility: hidden;
+      transform: translateY(20px) scale(0.97); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto; padding: 10px 5px 30px;
+    }
+    .tab-section::-webkit-scrollbar { display: none; }
+    .tab-section.active-tab { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+
+    .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 25px; align-items: center; }
+    .hero-content .badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      border-radius: 100px; background: var(--glow-effect); border: 1px solid var(--border-hover);
+      color: var(--accent-cyan); font-size: 0.75rem; font-weight: 800; margin-bottom: 10px;
+    }
+    .hero-content h2 { font-size: 2.1rem; font-weight: 900; line-height: 1.2; margin-bottom: 10px; }
+    .hero-content h2 span { background: var(--cinematic-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
+
+    .studio-goals-panel { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
+    .goal-item {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);
+      padding: 8px 12px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);
+    }
+    .goal-item i { color: var(--accent-cyan); font-size: 0.9rem; }
+    .goal-item span { font-size: 0.78rem; font-weight: 700; }
+
+    .hero-welcome-msg {
+      background: var(--bg-card); border-right: 4px solid var(--accent-purple);
+      padding: 10px 14px; border-radius: 10px; margin-bottom: 15px; font-size: 0.82rem; backdrop-filter: blur(10px);
+    }
+
+    .btn-cinematic {
+      background: var(--cinematic-gradient); color: #fff; font-weight: 800; padding: 10px 22px;
+      border-radius: 100px; border: none; cursor: pointer; box-shadow: 0 6px 20px var(--glow-effect);
+      transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem;
+    }
+    .btn-cinematic:hover { transform: translateY(-2px); box-shadow: 0 10px 25px var(--glow-effect); }
+
+    .btn-outline {
+      background: rgba(124, 58, 237, 0.04); color: var(--text-main); border: 1px solid var(--border-color);
+      font-weight: 700; padding: 10px 22px; border-radius: 100px; cursor: pointer; transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem;
+    }
+    .btn-outline:hover { border-color: var(--accent-cyan); background: var(--glow-effect); }
+
+    .hero-visual {
+      position: relative; width: 100%; height: 340px; background: var(--bg-card);
+      border: 1px solid var(--border-hover); border-radius: var(--radius-lg); overflow: hidden;
+      display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-cinematic);
+    }
+    .studio-mockup {
+      width: 90%; height: 85%; background: var(--bg-surface); border-radius: 14px;
+      border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; position: relative;
+    }
+    .mockup-header { height: 30px; background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 10px; gap: 6px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .dot-r { background: #ef4444; } .dot-y { background: #f59e0b; } .dot-g { background: #10b981; }
+    .mockup-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .mockup-icon { font-size: 2.8rem; background: var(--cinematic-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+    .mockup-title { font-size: 1.05rem; font-weight: 800; }
+    .mockup-sub { font-size: 0.72rem; color: var(--text-muted); }
+
+    .section-header { text-align: center; max-width: 600px; margin: 0 auto 20px; }
+    .section-header h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+    .section-header h2 span { background: var(--cinematic-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-header p { color: var(--text-muted); font-size: 0.88rem; }
+
+    .brand-about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .about-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      padding: 18px; backdrop-filter: blur(15px); transition: var(--transition); display: flex; flex-direction: column;
+    }
+    .about-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+    .about-card-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--glow-effect);
+      border: 1px solid var(--border-hover); display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--accent-cyan); margin-bottom: 10px;
+    }
+    .about-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 5px; }
+    .about-card p { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; flex-grow: 1; }
+    .about-card-btn {
+      align-self: flex-start; background: var(--accent-purple); color: #fff; font-weight: 700;
+      padding: 5px 12px; border-radius: 100px; font-size: 0.75rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    }
+
+    .filter-buttons { display: flex; justify-content: center; gap: 6px; margin-bottom: 18px; }
+    .filter-btn {
+      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
+      padding: 5px 14px; border-radius: 100px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: var(--transition);
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--cinematic-gradient); color: #fff; border-color: transparent; }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .product-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      overflow: hidden; display: flex; flex-direction: column; transition: var(--transition);
+    }
+    .product-card:hover { transform: translateY(-5px); border-color: var(--border-hover); box-shadow: var(--shadow-cinematic); }
+
+    .product-geo-banner { width: 100%; height: 160px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .geo-hardware { background: linear-gradient(135deg, #2e1065, #581c87); }
+    .geo-software { background: linear-gradient(135deg, #0c4a6e, #0369a1); }
+    .geo-ai { background: linear-gradient(135deg, #312e81, #4338ca); }
+
+    .product-geo-banner svg { width: 65px; height: 65px; fill: #ffffff; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5)); z-index: 2; }
+    .product-badge-cat {
+      position: absolute; top: 10px; right: 10px; background: rgba(15, 13, 38, 0.85);
+      border: 1px solid var(--border-hover); color: var(--accent-cyan); padding: 3px 10px;
+      border-radius: 100px; font-size: 0.7rem; font-weight: 700; backdrop-filter: blur(8px); z-index: 2;
+    }
+    [dir="ltr"] .product-badge-cat { right: auto; left: 10px; }
+
+    .product-body { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+    .product-title { font-size: 1rem; font-weight: 800; margin-bottom: 5px; }
+    .product-desc { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; flex-grow: 1; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; }
+    .product-price { font-size: 1.05rem; font-weight: 900; color: var(--accent-cyan); }
+
+    .btn-product-link {
+      background: var(--glow-effect); border: 1px solid var(--border-hover); color: var(--text-main);
+      padding: 5px 12px; border-radius: 100px; font-weight: 700; font-size: 0.75rem; transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 5px; border: none; cursor: pointer;
+    }
+    .btn-product-link:hover { background: var(--cinematic-gradient); color: #fff; border-color: transparent; }
+
+    .contact-box {
+      background: var(--bg-card); border: 1px solid var(--border-hover); border-radius: var(--radius-lg);
+      padding: 25px; text-align: center; max-width: 750px; margin: 0 auto; backdrop-filter: blur(20px);
+    }
+    .contact-box i.main-icon { font-size: 2.4rem; color: var(--accent-cyan); margin-bottom: 10px; }
+    .contact-box h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 5px; }
+    .contact-box p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; }
+
+    .fake-contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; text-align: right; margin-bottom: 18px;
+    }
+    .fake-info-card {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .fake-info-card i { font-size: 1.2rem; color: var(--accent-cyan); width: 25px; text-align: center; }
+    .fake-info-card div h4 { font-size: 0.78rem; font-weight: 800; color: var(--text-main); }
+    .fake-info-card div p { font-size: 0.72rem; color: var(--text-muted); margin: 0; }
+
+    /* AI Assistant FAB - Repositioned cleanly above mobile nav */
+    .ai-fab {
+      position: fixed; bottom: 85px; right: 20px; width: 44px; height: 44px; background: var(--cinematic-gradient);
+      color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; box-shadow: 0 6px 20px var(--glow-effect); z-index: 1999; cursor: pointer; border: none;
       transition: var(--transition);
     }
-    .mob-nav-btn i { font-size: 1.1rem; }
-    .mob-nav-btn.active { color: var(--accent-pink); }
+    [dir="ltr"] .ai-fab { right: 20px; }
+    .ai-fab:hover { transform: scale(1.1); }
 
-    /* التجاوب مع الأجهزة والشاشات */
-    @media (max-width: 1024px) {
-      .app-container { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .cards-grid { grid-template-columns: repeat(2, 1fr); }
-      .analytics-grid { grid-template-columns: 1fr; }
-      .products-grid-custom { grid-template-columns: repeat(2, 1fr); }
-      .mobile-nav-bar { display: flex; }
-      .main-content { padding: 16px; padding-bottom: 80px; }
+    .ai-chat-window {
+      position: fixed; bottom: 140px; right: 20px; width: 310px; height: 380px; background: var(--bg-card);
+      border: 1px solid var(--border-hover); border-radius: var(--radius-lg); box-shadow: var(--shadow-cinematic);
+      z-index: 2000; display: flex; flex-direction: column; overflow: hidden; opacity: 0; visibility: hidden;
+      transform: translateY(20px) scale(0.95); transition: var(--transition); backdrop-filter: blur(20px);
+    }
+    [dir="ltr"] .ai-chat-window { right: 20px; }
+    .ai-chat-window.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .ai-chat-header { background: var(--cinematic-gradient); color: #fff; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.85rem; }
+    .ai-chat-body { padding: 12px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 0.78rem; }
+    .ai-msg { padding: 8px 12px; border-radius: 10px; max-width: 85%; line-height: 1.4; }
+    .ai-msg.bot { background: rgba(124, 58, 237, 0.15); border: 1px solid var(--border-color); align-self: flex-start; }
+    .ai-msg.user { background: var(--accent-purple); color: #fff; align-self: flex-end; }
+    .ai-chat-footer { padding: 8px; border-top: 1px solid var(--border-color); display: flex; gap: 6px; background: rgba(0,0,0,0.2); }
+    .ai-chat-footer input { flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 100px; color: var(--text-main); font-size: 0.75rem; outline: none; }
+    .ai-chat-footer button { background: var(--accent-cyan); color: #000; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem; }
+
+    /* Modal Checkout */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: var(--transition);
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card {
+      background: var(--bg-card); border: 1px solid var(--border-hover); border-radius: var(--radius-lg);
+      width: 90%; max-width: 440px; padding: 22px; box-shadow: var(--shadow-cinematic); position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 12px; left: 12px; background: transparent; border: none; color: var(--text-muted);
+      font-size: 1.1rem; cursor: pointer;
+    }
+    [dir="ltr"] .modal-close { left: auto; right: 12px; }
+    .modal-card h3 { font-size: 1.15rem; font-weight: 900; margin-bottom: 8px; }
+    .modal-card p { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; }
+    .modal-input-group { margin-bottom: 10px; text-align: right; }
+    [dir="ltr"] .modal-input-group { text-align: left; }
+    .modal-input-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 3px; }
+    .modal-input-group input, .modal-input-group select {
+      width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 8px 12px;
+      border-radius: var(--radius-md); color: var(--text-main); font-size: 0.8rem; outline: none;
     }
 
-    @media (max-width: 600px) {
-      .cards-grid { grid-template-columns: 1fr; }
-      .products-grid-custom { grid-template-columns: 1fr; }
+    footer { border-top: 1px solid var(--border-color); padding-top: 18px; margin-top: 18px; text-align: center; }
+    .footer-brand { font-size: 1.1rem; font-weight: 900; background: var(--cinematic-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
+    .footer-rights { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 12px; }
+    .social-buttons { display: flex; justify-content: center; gap: 8px; }
+    .social-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border-color); background: var(--bg-card); font-weight: 700; font-size: 0.75rem; }
+
+    @media (max-width: 968px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .studio-goals-panel { justify-content: center; }
+      .nav-links { display: none; }
+      header { width: 92%; padding: 6px 10px; top: 40px; }
+      .promo-banner { height: 32px; font-size: 0.7rem; }
+      .app-viewport { bottom: 60px; top: 92px; }
+      .ai-fab { bottom: 75px; right: 15px; }
+      .ai-chat-window { bottom: 130px; right: 15px; width: 290px; }
+      .mobile-bottom-nav {
+        position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-glass);
+        backdrop-filter: blur(20px); border-top: 1px solid var(--border-color);
+        display: flex; justify-content: space-around; padding: 8px 4px; z-index: 1998;
+      }
+      .mobile-nav-btn { background: transparent; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.62rem; font-weight: 700; cursor: pointer; }
+      .mobile-nav-btn i { font-size: 1rem; }
+      .mobile-nav-btn.active { color: var(--accent-cyan); }
+    }
+    @media (min-width: 969px) { 
+      .mobile-bottom-nav { display: none; } 
+      .ai-fab { bottom: 25px; right: 25px; }
+      .ai-chat-window { bottom: 80px; right: 25px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    
-    <!-- القائمة الجانبية (Desktop Sidebar) -->
-    <aside class="sidebar">
-      <div>
-        <div class="brand-box">
-          <div class="brand-logo">N</div>
-          <div class="brand-text">
-            <div class="brand-name">NEOFLOW</div>
-            <span class="brand-sub">E-COMMERCE STUDIO</span>
-          </div>
-        </div>
+  <div class="cinematic-bg"></div>
 
-        <ul class="menu-list">
-          <li><button class="menu-item active" data-target="tab-dashboard"><i class="fa-solid fa-chart-pie"></i> لوحة التحكم</button></li>
-          <li><button class="menu-item" data-target="tab-orders"><i class="fa-solid fa-bag-shopping"></i> الطلبات</button></li>
-          <li><button class="menu-item" data-target="tab-products"><i class="fa-solid fa-box-archive"></i> المنتجات</button></li>
-          <li><button class="menu-item" data-target="tab-analytics"><i class="fa-solid fa-chart-line"></i> التحليلات</button></li>
-          <li><button class="menu-item" data-target="tab-settings"><i class="fa-solid fa-gear"></i> الإعدادات</button></li>
-        </ul>
-      </div>
-
-      <div class="user-profile-mini">
-        <div class="user-avatar">SA</div>
-        <div class="user-info">
-          <div class="name">Store Admin</div>
-          <span class="status">System Administrator</span>
-        </div>
-      </div>
-    </aside>
-
-    <!-- المحتوى الرئيسي والأقسام التفاعلية -->
-    <main class="main-content">
-      
-      <!-- قسم لوحة التحكم -->
-      <div id="tab-dashboard" class="tab-content active">
-        <header class="dashboard-header">
-          <h2 class="page-title">لوحة المؤشرات والتحليلات</h2>
-          <div class="header-actions">
-            <div class="icon-btn"><i class="fa-solid fa-search"></i></div>
-            <div class="icon-btn"><i class="fa-solid fa-bell"></i></div>
-            <div class="icon-btn"><i class="fa-solid fa-user"></i></div>
-          </div>
-        </header>
-
-        <section class="top-cards-section">
-          <div class="section-label">Top Cards</div>
-          <div class="cards-grid">
-            <div class="stat-card">
-              <div class="stat-header"><span class="stat-title">Total Revenue</span><span class="stat-badge badge-pos">+24%</span></div>
-              <div class="stat-value">$1,250,780</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-header"><span class="stat-title">Orders</span><span class="stat-badge badge-neg">-12%</span></div>
-              <div class="stat-value">18,901</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-header"><span class="stat-title">New Customers</span><span class="stat-badge badge-pos">+8%</span></div>
-              <div class="stat-value">3,456</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-header"><span class="stat-title">Conversion Rate</span><span class="stat-badge badge-pos">+15%</span></div>
-              <div class="stat-value">4.8%</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="analytics-grid">
-          <div class="analytics-box">
-            <div class="box-header">
-              <div class="box-title">Interactive Sales Analytics Chart</div>
-              <div class="filter-pills"><span class="pill active">Sales Filters</span><span class="pill">Orders</span></div>
-            </div>
-            <div class="chart-container">
-              <svg class="chart-svg" viewBox="0 0 500 120" preserveAspectRatio="none">
-                <path d="M 0,90 Q 80,20 160,70 T 320,40 T 500,20" fill="none" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 0,110 Q 90,60 180,80 T 360,30 T 500,50" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="analytics-box" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <div class="box-title" style="margin-bottom: 5px;">Live Visitors</div>
-              <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-cyan); margin-bottom: 5px;">1,425</div>
-              <span style="font-size: 0.7rem; color: var(--text-muted);">active traffic graph</span>
-            </div>
-            <div style="height: 60px; display: flex; align-items: flex-end; gap: 6px; justify-content: center;">
-              <div style="width: 8px; height: 30%; background: var(--accent-cyan); border-radius: 4px;"></div>
-              <div style="width: 8px; height: 70%; background: var(--accent-pink); border-radius: 4px;"></div>
-              <div style="width: 8px; height: 50%; background: var(--accent-cyan); border-radius: 4px;"></div>
-              <div style="width: 8px; height: 90%; background: var(--accent-purple); border-radius: 4px;"></div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- قسم الطلبات -->
-      <div id="tab-orders" class="tab-content">
-        <header class="dashboard-header"><h2 class="page-title">إدارة الطلبات والعملاء</h2></header>
-        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;">
-          <i class="fa-solid fa-bag-shopping" style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 12px;"></i>
-          <h3>قائمة الطلبات الأخيرة نشطة</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">تتبع عمليات الشراء والشحن الفوري للعملاء بدقة عالية.</p>
-        </div>
-      </div>
-
-      <!-- قسم المنتجات -->
-      <div id="tab-products" class="tab-content">
-        <header class="dashboard-header"><h2 class="page-title">كتالوج المنتجات والخدمات</h2></header>
-        <div class="products-grid-custom">
-          <div class="product-card-item">
-            <div class="product-thumb"><i class="fa-solid fa-clock"></i></div>
-            <h4 class="product-meta-title">Nebula Smartwatch</h4>
-            <span class="product-meta-cat">Category Tech</span>
-            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
-          </div>
-          <div class="product-card-item">
-            <div class="product-thumb" style="background: linear-gradient(135deg, #111827, #1f2937);"><i class="fa-solid fa-headphones" style="color: var(--accent-cyan);"></i></div>
-            <h4 class="product-meta-title">Nebula Headset</h4>
-            <span class="product-meta-cat">Category Tech</span>
-            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
-          </div>
-          <div class="product-card-item">
-            <div class="product-thumb" style="background: linear-gradient(135deg, #371d35, #581c87);"><i class="fa-solid fa-shirt" style="color: var(--accent-purple);"></i></div>
-            <h4 class="product-meta-title">Nebula Apparel</h4>
-            <span class="product-meta-cat">Category Fashion</span>
-            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- قسم التحليلات -->
-      <div id="tab-analytics" class="tab-content">
-        <header class="dashboard-header"><h2 class="page-title">تقارير المبيعات الشاملة</h2></header>
-        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
-          <h3 style="margin-bottom: 10px;">تحليلات ومؤشرات النمو</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem;">متابعة الأداء الإجمالي للأرباح ومعدلات التحويل والزيارات.</p>
-        </div>
-      </div>
-
-      <!-- قسم الإعدادات -->
-      <div id="tab-settings" class="tab-content">
-        <header class="dashboard-header"><h2 class="page-title">إعدادات المنصة والأمان</h2></header>
-        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
-          <h3 style="margin-bottom: 10px;">إعدادات الاستوديو العامة</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem;">خيارات حماية المتاجر، ربط بوابات الدفع، وإدارة التراخيص.</p>
-        </div>
-      </div>
-
-    </main>
+  <!-- Promo Banner -->
+  <div class="promo-banner">
+    <i class="fa-solid fa-tags"></i>
+    <span data-i18n="banner-promo">خصم حصري 60% على جميع البرمجيات والحلول باستعمال كود الخصم العام</span>
   </div>
 
-  <!-- شريط الملاحة السفلي التفاعلي للموبايل -->
-  <nav class="mobile-nav-bar">
-    <button class="mob-nav-btn active" data-target="tab-dashboard"><i class="fa-solid fa-chart-pie"></i> <span>الرئيسية</span></button>
-    <button class="mob-nav-btn" data-target="tab-orders"><i class="fa-solid fa-bag-shopping"></i> <span>الطلبات</span></button>
-    <button class="mob-nav-btn" data-target="tab-products"><i class="fa-solid fa-box-archive"></i> <span>المنتجات</span></button>
-    <button class="mob-nav-btn" data-target="tab-settings"><i class="fa-solid fa-gear"></i> <span>الإعدادات</span></button>
+  <!-- Header -->
+  <header>
+    <div class="brand-container">
+      <div class="brand-logo-box" id="logo-letter">C</div>
+      <div class="brand-text">
+        <h1 data-i18n="brand-name">Corporate Solution</h1>
+        <span data-i18n="brand-sub">E-Commerce & Tech Studio</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><button class="nav-link-btn active" data-tab="tab-hero"><i class="fa-solid fa-laptop-code"></i> <span data-i18n="nav-home">الرئيسية</span></button></li>
+      <li><button class="nav-link-btn" data-tab="tab-about"><i class="fa-solid fa-microchip"></i> <span data-i18n="nav-about">الخدمات التقنية</span></button></li>
+      <li><button class="nav-link-btn" data-tab="tab-products"><i class="fa-solid fa-cart-shopping"></i> <span data-i18n="nav-products">المتجر والحلول</span></button></li>
+      <li><button class="nav-link-btn" data-tab="tab-contact"><i class="fa-solid fa-headset"></i> <span data-i18n="nav-contact">الدعم والطلب</span></button></li>
+    </ul>
+
+    <div class="nav-controls">
+      <div class="ctrl-btn-group">
+        <button class="ctrl-btn cart-badge" id="cart-toggle" title="سلة المشتريات"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count" id="cart-count-val">0</span></button>
+        <button class="ctrl-btn" id="lang-toggle">EN</button>
+        <button class="ctrl-btn" id="theme-toggle"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Viewport Content -->
+  <div class="app-viewport">
+    <section class="tab-section active-tab" id="tab-hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge"><i class="fa-solid fa-bolt"></i> <span data-i18n="hero-badge">حلول التجارة والشركات التقنية VIP</span></div>
+          <h2 data-i18n="hero-title">منظومة التجارة والتقنية <span>بجيل المستقبل</span></h2>
+          <p data-i18n="hero-desc">مرحباً بكم في الاستوديو البرمجي المتكامل للحلول البرمجية، الأجهزة الذكية، وتطبيقات الذكاء الاصطناعي ذات السلسلة السينمائية.</p>
+
+          <div class="studio-goals-panel">
+            <div class="goal-item"><i class="fa-solid fa-store"></i> <span data-i18n="goal-1">متاجر رقمية متكاملة</span></div>
+            <div class="goal-item"><i class="fa-solid fa-robot"></i> <span data-i18n="goal-2">حلول ذكاء اصطناعي</span></div>
+            <div class="goal-item"><i class="fa-solid fa-server"></i> <span data-i18n="goal-3">استضافات وسحابة آمنة</span></div>
+            <div class="goal-item"><i class="fa-solid fa-mobile-screen-button"></i> <span data-i18n="goal-4">تطبيقات الجوال والويب</span></div>
+          </div>
+
+          <div class="hero-welcome-msg" data-i18n="hero-welcome">
+            «أهلاً بكم في الحل المتكامل للشركات والمتاجر الرقمية. يمكن تعديل البيانات بالكامل بكل سهولة!»
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-cinematic nav-trigger" data-target="tab-products">
+              <span data-i18n="btn-explore">تسوق المنتجات والحلول</span> <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button class="btn-outline nav-trigger" data-target="tab-contact">
+              <i class="fa-solid fa-headset"></i> <span data-i18n="btn-whatsapp-hero">طلب استشارة تقنية</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="studio-mockup">
+            <div class="mockup-header">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            </div>
+            <div class="mockup-body">
+              <i class="fa-solid fa-network-wired mockup-icon"></i>
+              <div class="mockup-title" id="mockup-brand-title">Enterprise Tech Ecosystem</div>
+              <div class="mockup-sub" data-i18n="mockup-sub">AI Systems, SaaS & Digital Storefronts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-section" id="tab-about">
+      <div class="section-header">
+        <h2 data-i18n="about-header-title">الخدمات التقنية <span>والتطوير البرمجي</span></h2>
+        <p data-i18n="about-header-desc">نبتكر لك منظومة تقنية متكاملة تضمن لك التفوق التجاري وتيسير إدارة الأعمال الرقمية.</p>
+      </div>
+
+      <div class="brand-about-grid">
+        <div class="about-card" style="border-color: var(--border-hover);">
+          <div class="about-card-icon"><i class="fa-solid fa-cart-flatbed"></i></div>
+          <h3 data-i18n="srv1-title">إنشاء وتصميم المتاجر الإلكترونية</h3>
+          <p data-i18n="srv1-desc">متاجر إلكترونية فائقة السرعة مع بوابات دفع آمنة ولوحات تحكم لإدارة المنتجات والمبيعات.</p>
+          <button class="about-card-btn nav-trigger" data-target="tab-contact"><i class="fa-solid fa-check"></i> <span data-i18n="srv-wa">طلب متجر إلكتروني</span></button>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3 data-i18n="ab1-title">أنظمة الذكاء الاصطناعي الأوتوماتيكية</h3>
+          <p data-i18n="ab1-desc">دمج البوتات الذكية وتحليلات البيانات لتطوير خدمة العملاء وزيادة التحويلات المالية.</p>
+          <button class="about-card-btn nav-trigger" data-target="tab-contact"><i class="fa-solid fa-check"></i> <span data-i18n="srv-wa">استفسار الذكاء الاصطناعي</span></button>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <h3 data-i18n="ab2-title">الاستضافات وحلول السحابة الإلكترونية</h3>
+          <p data-i18n="ab2-desc">خوادم وسحابات آمنة ومحمية من الهجمات بضمان تشغيل 99.9% وسرعة معالجة عالية.</p>
+          <button class="about-card-btn nav-trigger" data-target="tab-contact"><i class="fa-solid fa-check"></i> <span data-i18n="srv-wa">طلب خادم سحابي</span></button>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon"><i class="fa-solid fa-shield-virus"></i></div>
+          <h3 data-i18n="ab3-title">الأمن السيبراني والحماية البرمجية</h3>
+          <p data-i18n="ab3-desc">فحص وتأمين التطبيقات والأنظمة التجارية من الثغرات وسرقة البيانات الحساسة.</p>
+          <button class="about-card-btn nav-trigger" data-target="tab-contact"><i class="fa-solid fa-check"></i> <span data-i18n="srv-wa">طلب فحص أمني</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-section" id="tab-products">
+      <div class="section-header">
+        <h2 data-i18n="prod-header-title">معرض المنتجات <span>والباقات التقنية</span></h2>
+        <p data-i18n="prod-header-desc">اختر المنتج البرمجي، الجهاز الذكي، أو الباقة التقنية المناسبة لنشاطك مع إمكانية الشراء الفوري</p>
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all" data-i18n="filter-all">الكل</button>
+        <button class="filter-btn" data-filter="hardware" data-i18n="filter-hardware">الأجهزة والعتاد</button>
+        <button class="filter-btn" data-filter="software" data-i18n="filter-software">البرمجيات وSaaS</button>
+        <button class="filter-btn" data-filter="ai" data-i18n="filter-ai">أدوات الـ AI</button>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card" data-category="hardware">
+          <div class="product-geo-banner geo-hardware">
+            <svg viewBox="0 0 24 24"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14zM6 13h5v5H6z"/></svg>
+            <div class="product-badge-cat" data-i18n="cat-hardware">جهاز سيرفر مصغر VIP</div>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">وحدة معالجة وسيرفر ذكي ذو سرعة عالية</h3>
+            <p class="product-desc">سيرفر مصغر فائق الأداء لمعالجة البيانات الضخمة وتشغيل تطبيقات المتاجر والذكاء الاصطناعي local.</p>
+            <div class="product-footer">
+              <span class="product-price">$899.00</span>
+              <button class="btn-product-link open-checkout" data-product="وحدة معالجة وسيرفر ذكي" data-price="899"><span data-i18n="btn-view">طلب الشراء</span> <i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="software">
+          <div class="product-geo-banner geo-software">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+            <div class="product-badge-cat" data-i18n="cat-software">ترخيص متجر SaaS</div>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">سكربت القالب السينمائي للمتاجر الرقمية</h3>
+            <p class="product-desc">قالب متجر إلكتروني شامل وسريع يعمل بدون مكتبات مع لوحة إدارة كاملة للعملاء والمنتجات.</p>
+            <div class="product-footer">
+              <span class="product-price">$299.00</span>
+              <button class="btn-product-link open-checkout" data-product="سكربت القالب السينمائي للمتاجر" data-price="299"><span data-i18n="btn-view">طلب الترخيص</span> <i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="ai">
+          <div class="product-geo-banner geo-ai">
+            <svg viewBox="0 0 24 24"><path d="M21 11.18V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7.18A6 6 0 0 1 21 11.18zM12 16H8a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm4-4H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm0-4H8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2z"/></svg>
+            <div class="product-badge-cat" data-i18n="cat-ai">بوت الذكاء الاصطناعي</div>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">مساعد رد آلي ذكي للواتساب والمتاجر</h3>
+            <p class="product-desc">نظام ذكي متصل بـ ChatGPT لخدمة العملاء على مدار 24 ساعة وإغلاق المبيعات بمرونة.</p>
+            <div class="product-footer">
+              <span class="product-price">$199.00</span>
+              <button class="btn-product-link open-checkout" data-product="مساعد رد آلي ذكي للواتساب" data-price="199"><span data-i18n="btn-view">طلب الاشتراك</span> <i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-section" id="tab-contact">
+      <div class="contact-box">
+        <i class="fa-solid fa-headset main-icon"></i>
+        <h3 data-i18n="contact-title">الدعم الفني وتلقي الطلبات</h3>
+        <p data-i18n="contact-desc">فريق المبيعات والدعم الفني جاهزون للرد على استفساراتكم وتنفيذ طلباتكم البرمجية.</p>
+
+        <div class="fake-contact-grid">
+          <div class="fake-info-card">
+            <i class="fa-solid fa-envelope"></i>
+            <div>
+              <h4 data-i18n="fake-p2-title">البريد التقني الرسمي:</h4>
+              <p id="footer-email">support@corporate-solution.com</p>
+            </div>
+          </div>
+
+          <div class="fake-info-card">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <h4 data-i18n="fake-p3-title">المقر الرئيسي:</h4>
+              <p data-i18n="fake-p3-desc">المدينة التقنية، برج الأعمال والابتكار</p>
+            </div>
+          </div>
+
+          <div class="fake-info-card">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <h4 data-i18n="fake-p4-title">مواعيد الدعم الفني:</h4>
+              <p data-i18n="fake-p4-desc">خدمة 24/7 متواصلة طوال أيام الأسبوع</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-cinematic nav-trigger" data-target="tab-products">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span data-i18n="contact-btn">تصفح المنتجات وتقديم طلب</span>
+        </button>
+      </div>
+
+      <footer>
+        <div class="footer-brand" id="footer-brand-name">Corporate Solution Studio</div>
+        <div class="footer-rights" data-i18n="footer-rights">جميع حقوق الملكية محفوظة للمنصة.</div>
+        <div class="social-buttons">
+          <a href="#" class="social-btn"><i class="fa-solid fa-globe"></i> Website</a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </footer>
+    </section>
+  </div>
+
+  <!-- AI Assistant Floating Widget - Positioned cleanly -->
+  <button class="ai-fab" id="ai-fab-btn" title="مساعد الذكاء الاصطناعي"><i class="fa-solid fa-robot"></i></button>
+  <div class="ai-chat-window" id="ai-chat-window">
+    <div class="ai-chat-header">
+      <span><i class="fa-solid fa-robot"></i> المساعد الذكي الآلي</span>
+      <button id="ai-close-btn" style="background:none; border:none; color:#fff; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ai-chat-body" id="ai-chat-body">
+      <div class="ai-msg bot">أهلاً بك! أنا المساعد الذكي للموقع. كيف يمكنني مساعدتك اليوم في اختيار القالب أو الاستفسار عن الأسعار؟</div>
+    </div>
+    <div class="ai-chat-footer">
+      <input type="text" id="ai-input" placeholder="اكتب سؤالك هنا...">
+      <button id="ai-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Modal Checkout -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-card">
+      <button class="modal-close" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+      <h3 data-i18n="modal-title">تأكيد الطلب وحجز الخدمة</h3>
+      <p data-i18n="modal-desc">أدخل بياناتك وسيتم إرسال الطلب للفريق لمتابعة عملية الشراء والتسليم.</p>
+      
+      <div class="modal-input-group">
+        <label data-i18n="modal-lbl-product">المنتج المختار:</label>
+        <input type="text" id="modal-product-name" readonly>
+      </div>
+      <div class="modal-input-group">
+        <label data-i18n="modal-lbl-name">الاسم:</label>
+        <input type="text" id="client-name" placeholder="ادخل الاسم بالكامل">
+      </div>
+      <div class="modal-input-group">
+        <label data-i18n="modal-lbl-email">البريد الإلكتروني:</label>
+        <input type="email" id="client-email" placeholder="example@domain.com">
+      </div>
+      <button class="btn-cinematic" id="confirm-order-action" style="width: 100%; justify-content: center; margin-top: 10px;">
+        <i class="fa-solid fa-check"></i> <span data-i18n="modal-btn-send">تأكيد الطلب الآن</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" data-tab="tab-hero"><i class="fa-solid fa-laptop-code"></i> <span data-i18n="nav-home">الرئيسية</span></button>
+    <button class="mobile-nav-btn" data-tab="tab-about"><i class="fa-solid fa-microchip"></i> <span data-i18n="nav-about">الخدمات</span></button>
+    <button class="mobile-nav-btn" data-tab="tab-products"><i class="fa-solid fa-cart-shopping"></i> <span data-i18n="nav-products">المتجر</span></button>
+    <button class="mobile-nav-btn" data-tab="tab-contact"><i class="fa-solid fa-headset"></i> <span data-i18n="nav-contact">الدعم</span></button>
   </nav>
 
   <script>
-    const navTriggers = document.querySelectorAll('.mob-nav-btn, .menu-item');
-    const tabContents = document.querySelectorAll('.tab-content');
+    const SITE_CONFIG = {
+      storeName: "Corporate Solution",
+      tagline: "E-Commerce & Tech Studio",
+      supportEmail: "support@corporate-solution.com"
+    };
 
-    navTriggers.forEach(btn => {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById('footer-brand-name').textContent = SITE_CONFIG.storeName + " Studio";
+      document.getElementById('footer-email').textContent = SITE_CONFIG.supportEmail;
+      document.getElementById('mockup-brand-title').textContent = SITE_CONFIG.storeName + " Tech Ecosystem";
+      document.getElementById('logo-letter').textContent = SITE_CONFIG.storeName.charAt(0);
+    });
+
+    const translations = {
+      ar: {
+        "banner-promo": "خصم حصري 60% على جميع البرمجيات والحلول باستعمال كود الخصم العام",
+        "brand-name": SITE_CONFIG.storeName, "brand-sub": SITE_CONFIG.tagline,
+        "nav-home": "الرئيسية", "nav-about": "الخدمات التقنية", "nav-products": "المتجر والحلول", "nav-contact": "الدعم والطلب",
+        "hero-badge": "حلول التجارة والشركات التقنية VIP", "hero-title": "منظومة التجارة والتقنية بجيل المستقبل",
+        "hero-desc": "مرحباً بكم في الاستوديو البرمجي المتكامل للحلول البرمجية، الأجهزة الذكية، وتطبيقات الذكاء الاصطناعي ذات السلسلة السينمائية.",
+        "goal-1": "متاجر رقمية متكاملة", "goal-2": "حلول ذكاء اصطناعي", "goal-3": "استضافات وسحابة آمنة", "goal-4": "تطبيقات الجوال والويب",
+        "hero-welcome": "«أهلاً بكم في الحل المتكامل للشركات والمتاجر الرقمية. يمكن تعديل البيانات بالكامل بكل سهولة!»",
+        "btn-explore": "تسوق المنتجات والحلول", "btn-whatsapp-hero": "طلب استشارة تقنية",
+        "about-header-title": "الخدمات التقنية والتطوير البرمجي", "about-header-desc": "نبتكر لك منظومة تقنية متكاملة تضمن لك التفوق التجاري وتيسير إدارة الأعمال الرقمية.",
+        "srv1-title": "إنشاء وتصميم المتاجر الإلكترونية", "srv1-desc": "متاجر إلكترونية فائقة السرعة مع بوابات دفع آمنة ولوحات تحكم لإدارة المنتجات والمبيعات.",
+        "srv-wa": "طلب متجر إلكتروني", "ab1-title": "أنظمة الذكاء الاصطناعي الأوتوماتيكية", "ab1-desc": "دمج البوتات الذكية وتحليلات البيانات لتطوير خدمة العملاء وزيادة التحويلات المالية.",
+        "ab2-title": "الاستضافات وحلول السحابة الإلكترونية", "ab2-desc": "خوادم وسحابات آمنة ومحمية من الهجمات بضمان تشغيل 99.9% وسرعة معالجة عالية.",
+        "ab3-title": "الأمن السيبراني والحماية البرمجية", "ab3-desc": "فحص وتأمين التطبيقات والأنظمة التجارية من الثغرات وسرقة البيانات الحساسة.",
+        "prod-header-title": "معرض المنتجات والباقات التقنية", "prod-header-desc": "اختر المنتج البرمجي، الجهاز الذكي، أو الباقة التقنية المناسبة لنشاطك مع إمكانية الشراء الفوري",
+        "filter-all": "الكل", "filter-hardware": "الأجهزة والعتاد", "filter-software": "البرمجيات وSaaS", "filter-ai": "أدوات الـ AI",
+        "cat-hardware": "جهاز سيرفر مصغر VIP", "cat-software": "ترخيص متجر SaaS", "cat-ai": "بوت الذكاء الاصطناعي",
+        "btn-view": "طلب الشراء", "contact-title": "الدعم الفني وتلقي الطلبات",
+        "contact-desc": "فريق المبيعات والدعم الفني جاهزون للرد على استفساراتكم وتنفيذ طلباتكم البرمجية.",
+        "fake-p2-title": "البريد التقني الرسمي:",
+        "fake-p3-title": "المقر الرئيسي:", "fake-p3-desc": "المدينة التقنية، برج الأعمال والابتكار",
+        "fake-p4-title": "مواعيد الدعم الفني:", "fake-p4-desc": "خدمة 24/7 متواصلة طوال أيام الأسبوع",
+        "contact-btn": "تصفح المنتجات وتقديم طلب", "footer-rights": "جميع حقوق الملكية محفوظة للمنصة.",
+        "modal-title": "تأكيد الطلب وحجز الخدمة", "modal-desc": "أدخل بياناتك وسيتم إرسال الطلب للفريق لمتابعة عملية الشراء والدفع.",
+        "modal-lbl-product": "المنتج المختار:", "modal-lbl-name": "الاسم:", "modal-lbl-email": "البريد الإلكتروني:",
+        "modal-btn-send": "تأكيد الطلب الآن"
+      },
+      en: {
+        "banner-promo": "Exclusive 60% OFF on all software & tools using general promo code",
+        "brand-name": SITE_CONFIG.storeName, "brand-sub": SITE_CONFIG.tagline,
+        "nav-home": "Home", "nav-about": "Tech Services", "nav-products": "Store & Solutions", "nav-contact": "Support & Orders",
+        "hero-badge": "VIP E-Commerce & Tech Enterprise Solutions", "hero-title": "Next-Generation Digital Commerce & Tech Ecosystem",
+        "hero-desc": "Welcome to your digital storefront for enterprise software solutions, smart hardware, and AI tools.",
+        "goal-1": "Turnkey Digital Stores", "goal-2": "AI Automation Systems", "goal-3": "Secure Cloud & Hosting", "goal-4": "Mobile & Web Apps",
+        "hero-welcome": "“Welcome to Corporate Solution Studio. Easily customizable layout for your brand!”",
+        "btn-explore": "Shop Products & Solutions", "btn-whatsapp-hero": "Request Tech Consultation",
+        "about-header-title": "Technical Services & Software Engineering", "about-header-desc": "Creating comprehensive digital ecosystems ensuring commercial dominance and operational ease.",
+        "srv1-title": "Turnkey E-Commerce Development", "srv1-desc": "Ultra-fast digital storefronts with secure payment gateways and full inventory management.",
+        "srv-wa": "Request E-Store Setup", "ab1-title": "Automated AI Integration Systems", "ab1-desc": "AI bot integrations and predictive data analytics elevating client support and conversion rates.",
+        "ab2-title": "Cloud Infrastructure & Hosting", "ab2-desc": "DDoS-protected enterprise cloud servers guaranteeing 99.9% uptime and low latency.",
+        "ab3-title": "Cybersecurity & Code Auditing", "ab3-desc": "Vulnerability scanning and system hardening securing sensitive enterprise transaction data.",
+        "prod-header-title": "Tech Showcase & Software Marketplace", "prod-header-desc": "Select software scripts, smart hardware, or AI packages available for instant procurement",
+        "filter-all": "All", "filter-hardware": "Hardware & Equipment", "filter-software": "Software & SaaS", "filter-ai": "AI Tools",
+        "cat-hardware": "Mini VIP Edge Server", "cat-software": "SaaS Store License", "cat-ai": "Conversational AI Bot",
+        "btn-view": "Order Now", "contact-title": "Technical Support & Order Desk",
+        "contact-desc": "Our support and sales teams are on standby to handle your custom requests.",
+        "fake-p2-title": "Official Support Email:",
+        "fake-p3-title": "Headquarters:", "fake-p3-desc": "Tech City, Innovation Tower",
+        "fake-p4-title": "Technical Support Hours:", "fake-p4-desc": "24/7 Continuous Support All Week",
+        "contact-btn": "Browse Store & Order", "footer-rights": "All rights reserved.",
+        "modal-title": "Confirm Order", "modal-desc": "Enter your contact info to confirm the purchase request.",
+        "modal-lbl-product": "Selected Product:", "modal-lbl-name": "Your Name:", "modal-lbl-email": "Email Address:",
+        "modal-btn-send": "Submit Order Now"
+      }
+    };
+
+    const desktopNavButtons = document.querySelectorAll('.nav-link-btn');
+    const mobileNavButtons = document.querySelectorAll('.mobile-nav-btn');
+    const tabSections = document.querySelectorAll('.tab-section');
+
+    function switchTab(tabId) {
+      desktopNavButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId));
+      mobileNavButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId));
+      tabSections.forEach(section => section.classList.toggle('active-tab', section.id === tabId));
+    }
+
+    desktopNavButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))));
+    mobileNavButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))));
+    document.querySelectorAll('.nav-trigger').forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-target'))));
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlEl.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', newTheme);
+      themeToggleBtn.innerHTML = newTheme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+    });
+
+    const langToggleBtn = document.getElementById('lang-toggle');
+    let currentLang = 'ar';
+    langToggleBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      htmlEl.setAttribute('lang', currentLang);
+      htmlEl.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+      langToggleBtn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+      });
+    });
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const productCards = document.querySelectorAll('.product-card');
+    filterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-target');
-        if (!targetId) return;
-
-        tabContents.forEach(tab => {
-          tab.classList.toggle('active', tab.id === targetId);
-        });
-
-        document.querySelectorAll('.mob-nav-btn, .menu-item').forEach(el => {
-          if(el.getAttribute('data-target') === targetId) {
-            el.classList.add('active');
-          } else {
-            el.classList.remove('active');
-          }
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filterValue = btn.getAttribute('data-filter');
+        productCards.forEach(card => {
+          card.style.display = (filterValue === 'all' || card.getAttribute('data-category') === filterValue) ? 'flex' : 'none';
         });
       });
     });
+
+    // Cart & Modal
+    let cartCount = 0;
+    const modal = document.getElementById('checkout-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalProductName = document.getElementById('modal-product-name');
+    const confirmOrderBtn = document.getElementById('confirm-order-action');
+
+    document.querySelectorAll('.open-checkout').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productName = btn.getAttribute('data-product');
+        modalProductName.value = productName;
+        modal.classList.add('active');
+      });
+    });
+
+    closeModal.addEventListener('click', () => modal.classList.remove('active'));
+    window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+    confirmOrderBtn.addEventListener('click', () => {
+      cartCount++;
+      document.getElementById('cart-count-val').textContent = cartCount;
+      alert(currentLang === 'ar' ? 'تم استلام طلبك بنجاح! شكراً لك.' : 'Order received successfully!');
+      modal.classList.remove('active');
+    });
+
+    // AI Assistant Bot Logic
+    const aiFab = document.getElementById('ai-fab-btn');
+    const aiWindow = document.getElementById('ai-chat-window');
+    const aiClose = document.getElementById('ai-close-btn');
+    const aiSend = document.getElementById('ai-send-btn');
+    const aiInput = document.getElementById('ai-input');
+    const aiBody = document.getElementById('ai-chat-body');
+
+    aiFab.addEventListener('click', () => aiWindow.classList.toggle('active'));
+    aiClose.addEventListener('click', () => aiWindow.classList.remove('active'));
+
+    function handleAiMessage() {
+      const text = aiInput.value.trim();
+      if(!text) return;
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'ai-msg user';
+      userDiv.textContent = text;
+      aiBody.appendChild(userDiv);
+      aiInput.value = '';
+      aiBody.scrollTop = aiBody.scrollHeight;
+
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'ai-msg bot';
+        botDiv.textContent = currentLang === 'ar' 
+          ? 'شكراً لاستفسارك! يمكنك تعديل بيانات الموقع بالكامل من ملف السكريبت (SITE_CONFIG) أو تقديم طلب مباشر عبر خيارات المتجر.'
+          : 'Thanks for your inquiry! You can fully customize this template via SITE_CONFIG or place a direct order.';
+        aiBody.appendChild(botDiv);
+        aiBody.scrollTop = aiBody.scrollHeight;
+      }, 700);
+    }
+
+    aiSend.addEventListener('click', handleAiMessage);
+    aiInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleAiMessage(); });
   </script>
 </body>
 </html>
