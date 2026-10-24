@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>NEOFLOW E-COMMERCE | Dashboard & Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-main: #060913;
+      --bg-surface: #0b1120;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --bg-glass: rgba(11, 17, 32, 0.95);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-pink: #ec4899;
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --border-color: rgba(139, 92, 246, 0.25);
+      --border-hover: rgba(236, 72, 153, 0.5);
+      --glow-pink: rgba(236, 72, 153, 0.2);
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
+    html, body { width: 100%; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth; }
+    body { background-color: var(--bg-main); color: var(--text-main); position: relative; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* الشريط الجانبي (Desktop Sidebar) */
+    .sidebar {
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-color);
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      padding-right: 8px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px var(--glow-pink);
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-sub { font-size: 0.6rem; color: var(--accent-pink); font-weight: 700; display: block; letter-spacing: 1px; }
+
+    .menu-list { display: flex; flex-direction: column; gap: 6px; }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: right;
+    }
+    .menu-item i { font-size: 1rem; width: 20px; text-align: center; }
+    .menu-item:hover, .menu-item.active {
+      color: #fff;
+      background: linear-gradient(90deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.05));
+      border-right: 3px solid var(--accent-pink);
+    }
+
+    .user-profile-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+    }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .user-info .name { font-size: 0.78rem; font-weight: 800; }
+    .user-info .status { font-size: 0.62rem; color: var(--text-muted); }
+
+    /* منطقة المحتوى الرئيسي (Main Content Tabs) */
+    .main-content {
+      padding: 24px;
+      overflow-y: auto;
+      max-height: 100vh;
+      position: relative;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .page-title { font-size: 1.25rem; font-weight: 900; }
+
+    .header-actions { display: flex; align-items: center; gap: 15px; }
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .icon-btn:hover { color: #fff; border-color: var(--accent-pink); background: var(--glow-pink); }
+
+    /* شبكة البطاقات العليا (Top Cards) */
+    .top-cards-section { margin-bottom: 24px; }
+    .section-label { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
+    
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(10px);
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%;
+      background: var(--accent-pink);
+    }
+    .stat-card:nth-child(2)::before { background: var(--accent-purple); }
+    .stat-card:nth-child(3)::before { background: var(--accent-emerald); }
+    .stat-card:nth-child(4)::before { background: var(--accent-cyan); }
+
+    .stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .stat-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
+    .stat-badge { font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .badge-pos { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .badge-neg { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    .stat-value { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+
+    /* الرسم البياني والتحليلات */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .analytics-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .box-title { font-size: 0.9rem; font-weight: 800; }
+    .filter-pills { display: flex; gap: 6px; }
+    .pill {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+      color: var(--text-muted); padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; cursor: pointer;
+    }
+    .pill.active { background: var(--accent-pink); color: #fff; border-color: transparent; }
+
+    .chart-container {
+      height: 140px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-top: 10px;
+    }
+    .chart-svg { width: 100%; height: 100%; overflow: visible; }
+
+    /* شبكة المنتجات */
+    .products-grid-custom {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .product-card-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-card);
+    }
+    .product-card-item:hover {
+      border-color: var(--accent-pink);
+      transform: translateY(-3px);
+    }
+
+    .product-thumb {
+      width: 100%;
+      height: 110px;
+      background: linear-gradient(135deg, #1e1b4b, #31103f);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-thumb i { font-size: 2.2rem; color: var(--accent-pink); }
+
+    .product-meta-title { font-size: 0.88rem; font-weight: 800; margin-bottom: 2px; }
+    .product-meta-cat { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; display: block; }
+    
+    .product-stats-row {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;
+      font-size: 0.75rem;
+    }
+    .price-tag { font-weight: 900; color: var(--accent-cyan); font-size: 0.95rem; }
+    .sales-count { color: var(--text-muted); font-weight: 700; }
+
+    /* شريط الملاحة السفلي للموبايل (Mobile Bottom Bar) */
+    .mobile-nav-bar {
+      display: none;
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: var(--bg-glass);
+      backdrop-filter: blur(15px);
+      border-top: 1px solid var(--border-color);
+      justify-content: space-around;
+      padding: 10px;
+      z-index: 1000;
+    }
+    .mob-nav-btn {
+      background: transparent; border: none; color: var(--text-muted);
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-size: 0.65rem; font-weight: 700; cursor: pointer;
+      transition: var(--transition);
+    }
+    .mob-nav-btn i { font-size: 1.1rem; }
+    .mob-nav-btn.active { color: var(--accent-pink); }
+
+    /* التجاوب مع الأجهزة والشاشات */
+    @media (max-width: 1024px) {
+      .app-container { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .analytics-grid { grid-template-columns: 1fr; }
+      .products-grid-custom { grid-template-columns: repeat(2, 1fr); }
+      .mobile-nav-bar { display: flex; }
+      .main-content { padding: 16px; padding-bottom: 80px; }
+    }
+
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .products-grid-custom { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- القائمة الجانبية (Desktop Sidebar) -->
+    <aside class="sidebar">
+      <div>
+        <div class="brand-box">
+          <div class="brand-logo">N</div>
+          <div class="brand-text">
+            <div class="brand-name">NEOFLOW</div>
+            <span class="brand-sub">E-COMMERCE STUDIO</span>
+          </div>
+        </div>
+
+        <ul class="menu-list">
+          <li><button class="menu-item active" data-target="tab-dashboard"><i class="fa-solid fa-chart-pie"></i> لوحة التحكم</button></li>
+          <li><button class="menu-item" data-target="tab-orders"><i class="fa-solid fa-bag-shopping"></i> الطلبات</button></li>
+          <li><button class="menu-item" data-target="tab-products"><i class="fa-solid fa-box-archive"></i> المنتجات</button></li>
+          <li><button class="menu-item" data-target="tab-analytics"><i class="fa-solid fa-chart-line"></i> التحليلات</button></li>
+          <li><button class="menu-item" data-target="tab-settings"><i class="fa-solid fa-gear"></i> الإعدادات</button></li>
+        </ul>
+      </div>
+
+      <div class="user-profile-mini">
+        <div class="user-avatar">SA</div>
+        <div class="user-info">
+          <div class="name">Store Admin</div>
+          <span class="status">System Administrator</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي والأقسام التفاعلية -->
+    <main class="main-content">
+      
+      <!-- قسم لوحة التحكم -->
+      <div id="tab-dashboard" class="tab-content active">
+        <header class="dashboard-header">
+          <h2 class="page-title">لوحة المؤشرات والتحليلات</h2>
+          <div class="header-actions">
+            <div class="icon-btn"><i class="fa-solid fa-search"></i></div>
+            <div class="icon-btn"><i class="fa-solid fa-bell"></i></div>
+            <div class="icon-btn"><i class="fa-solid fa-user"></i></div>
+          </div>
+        </header>
+
+        <section class="top-cards-section">
+          <div class="section-label">Top Cards</div>
+          <div class="cards-grid">
+            <div class="stat-card">
+              <div class="stat-header"><span class="stat-title">Total Revenue</span><span class="stat-badge badge-pos">+24%</span></div>
+              <div class="stat-value">$1,250,780</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><span class="stat-title">Orders</span><span class="stat-badge badge-neg">-12%</span></div>
+              <div class="stat-value">18,901</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><span class="stat-title">New Customers</span><span class="stat-badge badge-pos">+8%</span></div>
+              <div class="stat-value">3,456</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header"><span class="stat-title">Conversion Rate</span><span class="stat-badge badge-pos">+15%</span></div>
+              <div class="stat-value">4.8%</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="analytics-grid">
+          <div class="analytics-box">
+            <div class="box-header">
+              <div class="box-title">Interactive Sales Analytics Chart</div>
+              <div class="filter-pills"><span class="pill active">Sales Filters</span><span class="pill">Orders</span></div>
+            </div>
+            <div class="chart-container">
+              <svg class="chart-svg" viewBox="0 0 500 120" preserveAspectRatio="none">
+                <path d="M 0,90 Q 80,20 160,70 T 320,40 T 500,20" fill="none" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 0,110 Q 90,60 180,80 T 360,30 T 500,50" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="analytics-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="box-title" style="margin-bottom: 5px;">Live Visitors</div>
+              <div style="font-size: 1.8rem; font-weight: 900; color: var(--accent-cyan); margin-bottom: 5px;">1,425</div>
+              <span style="font-size: 0.7rem; color: var(--text-muted);">active traffic graph</span>
+            </div>
+            <div style="height: 60px; display: flex; align-items: flex-end; gap: 6px; justify-content: center;">
+              <div style="width: 8px; height: 30%; background: var(--accent-cyan); border-radius: 4px;"></div>
+              <div style="width: 8px; height: 70%; background: var(--accent-pink); border-radius: 4px;"></div>
+              <div style="width: 8px; height: 50%; background: var(--accent-cyan); border-radius: 4px;"></div>
+              <div style="width: 8px; height: 90%; background: var(--accent-purple); border-radius: 4px;"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- قسم الطلبات -->
+      <div id="tab-orders" class="tab-content">
+        <header class="dashboard-header"><h2 class="page-title">إدارة الطلبات والعملاء</h2></header>
+        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;">
+          <i class="fa-solid fa-bag-shopping" style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 12px;"></i>
+          <h3>قائمة الطلبات الأخيرة نشطة</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">تتبع عمليات الشراء والشحن الفوري للعملاء بدقة عالية.</p>
+        </div>
+      </div>
+
+      <!-- قسم المنتجات -->
+      <div id="tab-products" class="tab-content">
+        <header class="dashboard-header"><h2 class="page-title">كتالوج المنتجات والخدمات</h2></header>
+        <div class="products-grid-custom">
+          <div class="product-card-item">
+            <div class="product-thumb"><i class="fa-solid fa-clock"></i></div>
+            <h4 class="product-meta-title">Nebula Smartwatch</h4>
+            <span class="product-meta-cat">Category Tech</span>
+            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
+          </div>
+          <div class="product-card-item">
+            <div class="product-thumb" style="background: linear-gradient(135deg, #111827, #1f2937);"><i class="fa-solid fa-headphones" style="color: var(--accent-cyan);"></i></div>
+            <h4 class="product-meta-title">Nebula Headset</h4>
+            <span class="product-meta-cat">Category Tech</span>
+            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
+          </div>
+          <div class="product-card-item">
+            <div class="product-thumb" style="background: linear-gradient(135deg, #371d35, #581c87);"><i class="fa-solid fa-shirt" style="color: var(--accent-purple);"></i></div>
+            <h4 class="product-meta-title">Nebula Apparel</h4>
+            <span class="product-meta-cat">Category Fashion</span>
+            <div class="product-stats-row"><span class="price-tag">$189</span><span class="sales-count">1,450 sold</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- قسم التحليلات -->
+      <div id="tab-analytics" class="tab-content">
+        <header class="dashboard-header"><h2 class="page-title">تقارير المبيعات الشاملة</h2></header>
+        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+          <h3 style="margin-bottom: 10px;">تحليلات ومؤشرات النمو</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">متابعة الأداء الإجمالي للأرباح ومعدلات التحويل والزيارات.</p>
+        </div>
+      </div>
+
+      <!-- قسم الإعدادات -->
+      <div id="tab-settings" class="tab-content">
+        <header class="dashboard-header"><h2 class="page-title">إعدادات المنصة والأمان</h2></header>
+        <div style="background: var(--bg-card); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+          <h3 style="margin-bottom: 10px;">إعدادات الاستوديو العامة</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">خيارات حماية المتاجر، ربط بوابات الدفع، وإدارة التراخيص.</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- شريط الملاحة السفلي التفاعلي للموبايل -->
+  <nav class="mobile-nav-bar">
+    <button class="mob-nav-btn active" data-target="tab-dashboard"><i class="fa-solid fa-chart-pie"></i> <span>الرئيسية</span></button>
+    <button class="mob-nav-btn" data-target="tab-orders"><i class="fa-solid fa-bag-shopping"></i> <span>الطلبات</span></button>
+    <button class="mob-nav-btn" data-target="tab-products"><i class="fa-solid fa-box-archive"></i> <span>المنتجات</span></button>
+    <button class="mob-nav-btn" data-target="tab-settings"><i class="fa-solid fa-gear"></i> <span>الإعدادات</span></button>
+  </nav>
+
+  <script>
+    const navTriggers = document.querySelectorAll('.mob-nav-btn, .menu-item');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navTriggers.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+
+        tabContents.forEach(tab => {
+          tab.classList.toggle('active', tab.id === targetId);
+        });
+
+        document.querySelectorAll('.mob-nav-btn, .menu-item').forEach(el => {
+          if(el.getAttribute('data-target') === targetId) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
